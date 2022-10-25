@@ -18,12 +18,15 @@ var e = new CalendarEvent
     RecurrenceRules = new List<RecurrencePattern> { rrule },
 };
 
+// Create the basic calendar
 var calendar = new Calendar();
 calendar.Events.Add(e);
 
+// Serialize calendar to string
 var serializer = new CalendarSerializer();
 var serializedCalendar = serializer.SerializeToString(calendar);
 
+// Provide GET endpoint to fetch file
 app.MapGet("/", () =>
 {
     return Results.Content(serializedCalendar, contentType: "text/calendar");
