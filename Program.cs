@@ -1,26 +1,27 @@
 using Ical.Net;
-using Ical.Net.CalendarComponents;
-using Ical.Net.DataTypes;
 using Ical.Net.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
+
+var config = Environment.GetEnvironmentVariable("TBI_CONFIG") ?? "example.yaml"; 
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-var now = DateTime.Now;
-var later = now.AddHours(1);
+// Read YAML config
+var deserializer = new YamlDotNet.Serialization.DeserializerBuilder()
+    .WithNamingConvention(PascalCaseNamingConvention.Instance)
+    .Build();
 
-// Repeat daily for 5 days
-var rrule = new RecurrencePattern(FrequencyType.Daily, 1) { Count = 5 };
-var e = new CalendarEvent
-{
-    Start = new CalDateTime(now),
-    End = new CalDateTime(later),
-    RecurrenceRules = new List<RecurrencePattern> { rrule },
-};
+var calRules = deserializer.Deserialize<List<TimeBlockEvent>>(File.ReadAllText(config));
 
 // Create the basic calendar
 var calendar = new Calendar();
-calendar.Events.Add(e);
+
+// Add events
+foreach(var e in calRules)
+{
+    calendar.Events.Add(e.ToEvent());
+}
 
 // Serialize calendar to string
 var serializer = new CalendarSerializer();
@@ -30,6 +31,7 @@ var serializedCalendar = serializer.SerializeToString(calendar);
 app.MapGet("/", () =>
 {
     return Results.Content(serializedCalendar, contentType: "text/calendar");
+    // return Results.Content(serializedCalendar);
 });
 
 app.Run();
