@@ -6,10 +6,14 @@ TimeBlockEvents:
     End: 2022-10-24T05:30:00+02:00
     RecurrenceRules:
       - Frequency: Daily
-        Count: 7
   - Summary: Yoga
     Start: 2022-10-24T05:30:00+02:00
     End: 2022-10-24T05:30:00+02:00
+    RecurrenceRules:
+      - Frequency: Daily
+  - Summary: Something the next 7 days
+    Start: 2022-10-24T08:00:00+02:00
+    End: 2022-10-24T08:00:00+02:00
     RecurrenceRules:
       - Frequency: Daily
         Count: 7
