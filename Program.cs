@@ -3,7 +3,7 @@ using Ical.Net.CalendarComponents;
 using Ical.Net.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-var config = Environment.GetEnvironmentVariable("TBI_CONFIG") ?? "example.yaml"; 
+var config = Environment.GetEnvironmentVariable("TBI_CONFIG") ?? "example.yaml";
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
@@ -20,9 +20,12 @@ var calendar = new Calendar();
 calendar.AddTimeZone(new VTimeZone(calRules.Timezone));
 
 // Add events
-foreach(var e in calRules.TimeBlockEvents)
+if (calRules.TimeBlockEvents != null)
 {
-    calendar.Events.Add(e.ToEvent());
+    foreach (var e in calRules.TimeBlockEvents)
+    {
+        calendar.Events.Add(e.ToEvent());
+    }
 }
 
 // Serialize calendar to string
