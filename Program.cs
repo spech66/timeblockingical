@@ -1,4 +1,5 @@
 using Ical.Net;
+using Ical.Net.CalendarComponents;
 using Ical.Net.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -12,13 +13,14 @@ var deserializer = new YamlDotNet.Serialization.DeserializerBuilder()
     .WithNamingConvention(PascalCaseNamingConvention.Instance)
     .Build();
 
-var calRules = deserializer.Deserialize<List<TimeBlockEvent>>(File.ReadAllText(config));
+var calRules = deserializer.Deserialize<ICalConfig>(File.ReadAllText(config));
 
 // Create the basic calendar
 var calendar = new Calendar();
+calendar.AddTimeZone(new VTimeZone(calRules.Timezone));
 
 // Add events
-foreach(var e in calRules)
+foreach(var e in calRules.TimeBlockEvents)
 {
     calendar.Events.Add(e.ToEvent());
 }

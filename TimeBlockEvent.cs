@@ -3,13 +3,6 @@ using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
 using Ical.Net.Serialization;
 
-public class TimeBlockReccurence
-{
-    public FrequencyType Frequency { get; set; }
-
-    public int Count { get; set; }
-}
-
 public class TimeBlockEvent
 {
     public string? Summary { get; set; }
@@ -45,6 +38,7 @@ public class TimeBlockEvent
         return e;
     }
 }
+
 
 /*
 var rrule = new RecurrencePattern(FrequencyType.Daily, 1) { Count = 5 };
