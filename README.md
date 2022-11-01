@@ -9,3 +9,5 @@ The application will start and download the [5 day example](https://github.com/r
 Rule examples are defined on the [Wiki page](https://github.com/rianjs/ical.net/wiki/Working-with-recurring-elements).
 
 Get Route URL: [https://localhost:7081/](https://localhost:7081/).
+
+Environment variable `TBI_CONFIG` is set to `example.yaml` by default. Override to use your own config.
