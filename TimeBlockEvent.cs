@@ -9,13 +9,16 @@ public class TimeBlockEvent
 
     public DateTime Start { get; set; }
 
-    public DateTime End { get; set; }
+    public DateTime? End { get; set; }
+
+    public bool IsAllDay { get; set; }
 
     public List<TimeBlockReccurence> RecurrenceRules { get; set; }
 
     public TimeBlockEvent()
     {
         RecurrenceRules = new List<TimeBlockReccurence>();
+        IsAllDay = false;
     }
 
     public CalendarEvent ToEvent()
@@ -24,28 +27,30 @@ public class TimeBlockEvent
         {
             Summary = Summary ?? "",
             Start = new CalDateTime(Start),
-            End = new CalDateTime(End),
         };
 
-        foreach(var r in RecurrenceRules)
+        if (End.HasValue)
         {
-            e.RecurrenceRules.Add(new RecurrencePattern() {
-                Count = r.Count,
-                Frequency = r.Frequency,
-            });
+            e.End = new CalDateTime(End.Value);
+        }
+
+        if (IsAllDay)
+        {
+            e.IsAllDay = IsAllDay;
+        }
+
+        foreach (var r in RecurrenceRules)
+        {
+            var pattern = new RecurrencePattern();
+            if (r.ByDay != null) pattern.ByDay = r.ByDay;
+            if (r.Count.HasValue) pattern.Count = r.Count.Value;
+            if (r.Frequency.HasValue) pattern.Frequency = r.Frequency.Value;
+            if (r.Interval.HasValue) pattern.Interval = r.Interval.Value;
+            if (r.Until.HasValue) pattern.Until = r.Until.Value;
+
+            e.RecurrenceRules.Add(pattern);
         }
 
         return e;
     }
 }
-
-
-/*
-var rrule = new RecurrencePattern(FrequencyType.Daily, 1) { Count = 5 };
-var e = new CalendarEvent
-{
-    Start = new CalDateTime(DateTime.Now),
-    End = new CalDateTime(DateTime.Now.AddHours(1)),
-    RecurrenceRules = new List<RecurrencePattern> { rrule },
-};
-*/

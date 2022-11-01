@@ -13,3 +13,13 @@ TimeBlockEvents:
     RecurrenceRules:
       - Frequency: Daily
         Count: 7
+  - Summary: Example the second Thursday of every month from https://blog.elmah.io/generate-calendar-in-ical-format-with-net-using-ical-net/
+    Start: 2022-11-03T08:00:00+02:00
+    IsAllDay: true
+    RecurrenceRules:
+      - Frequency: Monthly
+        Interval: 1
+        ByDay:
+          - DayOfWeek: Thursday
+            Offset: 2
+        Until: 2023-01-01
