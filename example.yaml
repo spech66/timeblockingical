@@ -2,10 +2,14 @@ Timezone: Europe/Berlin
 
 TimeBlockEvents:
   - Summary: Wake Up
+    Description: Start the day right (and don't forget to make your bed).
     Start: 2022-10-24T05:30:00+02:00
     End: 2022-10-24T05:30:00+02:00
     RecurrenceRules:
       - Frequency: Daily
+    Alarms:
+      - Description: Wake Up
+        Trigger: 00:00:00
   - Summary: Yoga
     Start: 2022-10-24T05:30:00+02:00
     End: 2022-10-24T05:30:00+02:00
